@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 
 export default function TextForm(props) {
-
   // This method is used to convert the text to uppercase
   const handleUpClick = () => {
     let newText = text.toUpperCase();
     setText(newText);
+    props.showAlert("Converted to Uppercase!", "success");
   };
 
   // This method is used to convert the text to lowercase
   const handleLoClick = () => {
     let newText = text.toLowerCase();
     setText(newText);
+    props.showAlert("Converted to LowerCase!", "success");
   };
 
   // This method is used to clear the text
   const handleClearClick = () => {
     let newText = "";
     setText(newText);
+    props.showAlert("Cleared Text!", "success");
   };
 
   // This method is used to convert the first letter of each sentence to uppercase
@@ -33,6 +35,7 @@ export default function TextForm(props) {
       })
       .join(". ");
     setText(newText);
+    props.showAlert("Converted to Sentence case!", "success");
   };
 
   // This method is used to copy the text
@@ -40,13 +43,15 @@ export default function TextForm(props) {
     let text = document.getElementById("myBox");
     text.select();
     navigator.clipboard.writeText(text.value);
-  }
+    props.showAlert("Copied to clipboard!", "success");
+  };
 
   // This method is used to remove extra spaces
   const handleExtraSpaces = () => {
     let newText = text.split(/[ ]+/);
     setText(newText.join(" "));
-  }
+    props.showAlert("Extra spaces removed!", "success");
+  };
 
   const handleOnChange = (event) => {
     setText(event.target.value);
@@ -56,7 +61,10 @@ export default function TextForm(props) {
 
   return (
     <>
-      <div className="container">
+      <div
+        className="container"
+        style={{ color: props.mode === "dark" ? "white" : "#042743" }}
+      >
         <h1>{props.heading}</h1>
         <div className="mb-3">
           <textarea
@@ -67,6 +75,16 @@ export default function TextForm(props) {
             id="myBox"
             rows="8"
             placeholder="Enter your text here"
+            style={{
+              backgroundColor: props.mode === "dark" ? "#3b6c93" : "white",
+              color: props.mode === "dark" ? "white" : "#042743",
+            }}
+            onFocus={(e) =>
+              e.target.style.setProperty(
+                "--placeholder-color",
+                props.mode === "dark" ? "white" : "#042743"
+              )
+            }
           />
         </div>
         <button className="btn btn-primary mx-1" onClick={handleUpClick}>
@@ -89,15 +107,23 @@ export default function TextForm(props) {
         </button>
       </div>
 
-      <div className="container my-3">
+      <div
+        className="container my-3"
+        style={{ color: props.mode === "dark" ? "white" : "#042743" }}
+      >
         <h2>Your text summary</h2>
         <p>
-          Characters Count: {text.length} | Word Count: {text.split(" ").length}{" "}
-          | Sentence Count: {text.split(".").length}
+          Characters Count: {text.length} | Word Count:{" "}
+          {text.trim().split(/\s+/).filter(Boolean).length}  | Sentence Count:{" "}
+          {text.split(".").length-1}
         </p>
         <p>{0.008 * text.split(" ").length} Minutes to read</p>
         <h2>Preview</h2>
-        <p>{text}</p>
+        <p>
+          {text.length > 0
+            ? text
+            : "Enter something in the text box above to preview it here!"}
+        </p>
       </div>
     </>
   );
