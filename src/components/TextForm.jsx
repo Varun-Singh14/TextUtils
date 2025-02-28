@@ -43,6 +43,7 @@ export default function TextForm(props) {
     let text = document.getElementById("myBox");
     text.select();
     navigator.clipboard.writeText(text.value);
+    document.getSelection().removeAllRanges();
     props.showAlert("Copied to clipboard!", "success");
   };
 
@@ -65,7 +66,7 @@ export default function TextForm(props) {
         className="container"
         style={{ color: props.mode === "dark" ? "white" : "#042743" }}
       >
-        <h1>{props.heading}</h1>
+        <h1 className="mb-4">{props.heading}</h1>
         <div className="mb-3">
           <textarea
             type="email"
@@ -76,7 +77,7 @@ export default function TextForm(props) {
             rows="8"
             placeholder="Enter your text here"
             style={{
-              backgroundColor: props.mode === "dark" ? "#3b6c93" : "white",
+              backgroundColor: props.mode === "dark" ? "#13466e" : "white",
               color: props.mode === "dark" ? "white" : "#042743",
             }}
             onFocus={(e) =>
@@ -87,22 +88,22 @@ export default function TextForm(props) {
             }
           />
         </div>
-        <button className="btn btn-primary mx-1" onClick={handleUpClick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-1 my-1" onClick={handleUpClick}>
           Convert to Uppercase
         </button>
-        <button className="btn btn-primary mx-1" onClick={handleLoClick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-1 my-1" onClick={handleLoClick}>
           Convert to Lowercase
         </button>
-        <button className="btn btn-primary mx-1" onClick={handleSentenceClick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-1 my-1" onClick={handleSentenceClick}>
           Sentence case
         </button>
-        <button className="btn btn-primary mx-1" onClick={handleExtraSpaces}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-1 my-1" onClick={handleExtraSpaces}>
           Remove Extra Space
         </button>
-        <button className="btn btn-primary mx-1" onClick={handleCopy}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-1 my-1" onClick={handleCopy}>
           Copy Text
         </button>
-        <button className="btn btn-primary mx-1" onClick={handleClearClick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-1 my-1" onClick={handleClearClick}>
           Clear Text
         </button>
       </div>
@@ -117,12 +118,12 @@ export default function TextForm(props) {
           {text.trim().split(/\s+/).filter(Boolean).length}  | Sentence Count:{" "}
           {text.split(".").length-1}
         </p>
-        <p>{0.008 * text.split(" ").length} Minutes to read</p>
+        <p>{0.008 * text.split(/\s+/).filter(Boolean).length} Minutes to read</p>
         <h2>Preview</h2>
         <p>
           {text.length > 0
             ? text
-            : "Enter something in the text box above to preview it here!"}
+            : "Nothing to preview!"}
         </p>
       </div>
     </>

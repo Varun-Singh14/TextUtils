@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import TextForm from "./components/TextForm";
 import Alert from "./components/Alert";
 import About from "./components/About";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   // Whether dark mode is enabled or not.
@@ -50,13 +50,13 @@ function App() {
               exact path="/"
               element={
                 <TextForm
-                  heading="Enter the text to analyze"
+                  heading="Try TextUtils - Word Counter, Character Counter, Sentence Counter"
                   mode={mode}
                   showAlert={showAlert}
                 />
               }
             />
-            <Route exact path="/about" element={<About />} />
+            <Route exact path="/about" element={<About mode={mode}/>} />
           </Routes>
         </div>
       </Router>
